@@ -73,6 +73,12 @@ module.exports = {
         return res.json(response);
     },
 
+    async deleteAllAssets(req,res){
+        await Asset.remove({});
+        req.io.emit('assetPost');
+        return res.send();
+    },
+
     async countErrors(req,res){
         const response = await Asset.find().countDocuments({status : 'error', mac : 'aaa1166'})
         return res.json(response);

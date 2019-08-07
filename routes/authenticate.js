@@ -5,5 +5,6 @@ const AssetController = require('../src/controllers/AssetController');
 
 routes.post('/signin',Login.signIn);
 routes.post('/asset',AssetController.Create);
+routes.delete('/delete',AssetController.deleteAllAssets);
 
 module.exports = routes;
