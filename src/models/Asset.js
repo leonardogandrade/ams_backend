@@ -6,7 +6,7 @@ const AssetSchema = mongoose.Schema({
     name : String,  //Human identification of device    
     type : String,  //
     value : Number,
-    status : String,
+    status : String, //accepted values: ok, error, warning, inactive
     lastRepair : String,
     nextRepair : String,
     hourmeter : Number,
