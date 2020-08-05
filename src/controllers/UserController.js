@@ -1,16 +1,17 @@
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
-// const jwt = require('jsonwebtoken');
-// const authConfig = require('../config/auth');
+const jwt = require('jsonwebtoken');
+const authConfig = require('../config/auth');
 
-// function generateToken(userId){
-//     return jwt.sign({ id: userId },authConfig.secret,{ expiresIn : 86400 });   
-// }
+function generateToken(userId){
+    return jwt.sign({ id: userId },authConfig.secret,{ expiresIn : 86400 });   
+}
 
 module.exports = {
     async Create(req,res){
         try{
             const payload = await User.create(req.body);
+            console.log(req.body);
             console.log('user created successfully.');
             //token = generateToken(payload._id);
             return res.send({payload});
@@ -47,14 +48,21 @@ module.exports = {
         }
     },
 
-    // async signIn(req,res){
-    //     const {username,password} = req.body;
-    //     const response = await User.findOne({username,password});
-    //     if(response != ''){
-    //         token = generateToken(response._id);
-    //         return res.send({response,token});
-    //     }else{
-    //         res.status(400).send({error : 'user not found'});
-    //     }
-    // }
+    async signIn(req,res){
+        const {username,password} = req.body;
+        const response = await User.findOne({username,password});
+
+        if(response !== null ){
+            token = generateToken(response._id);
+            return res.send(
+                {
+                    token,
+                    name : response.name,
+                    username : response.username
+                });
+        }else
+            return res.send({error : 'user doesnt exist.'});
+    }
+    
+
 }

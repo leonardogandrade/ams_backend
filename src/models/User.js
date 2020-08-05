@@ -14,6 +14,10 @@ const UserSchema = mongoose.Schema({
         type : String,
         required : true,
     },
+    surname : {
+        type : String,
+        required : true,
+    },
     perfil : String,
     phone : String,
     company : String,

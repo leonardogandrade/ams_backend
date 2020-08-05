@@ -42,4 +42,4 @@ app.use('/api',require('./routes/routes'));
 app.use('/login',require('./routes/authenticate'));
 
 server.listen(process.env.PORT || 3002);
-console.log(`server is listenning.`)
+console.log(`server is listenning.`);

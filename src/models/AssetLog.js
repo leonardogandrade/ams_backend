@@ -4,7 +4,7 @@ const mongoosePaginate = require('mongoose-paginate');
 const AssetSchema = mongoose.Schema({
     mac : String,   //Unique ID from device
     name : String,  //Human identification of device    
-    type : String,  //
+    type : String,  //vehicle, router, sensor
     value : Number,
     status : String, //accepted values: ok, error, warning, inactive
     lastRepair : String,
@@ -23,4 +23,4 @@ const AssetSchema = mongoose.Schema({
 
 AssetSchema.plugin(mongoosePaginate);
 
-mongoose.model('Asset',AssetSchema); 
+mongoose.model('AssetLog',AssetSchema); 

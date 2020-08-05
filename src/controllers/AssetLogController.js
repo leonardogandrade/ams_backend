@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Asset = mongoose.model('Asset');
+const AssetLog = mongoose.model('AssetLog');
 const OneSignal = require('onesignal-node');
 require('dotenv').config();
 
@@ -29,10 +29,11 @@ module.exports = {
     //Creating asset record.
     async Create(req,res){
         try{
-            const payload = req.body
-            await Asset.create(req.body);
+            const payload = req.body;
+            console.log(payload);
+            await AssetLog.create(req.body);
             req.io.emit('assetPost',payload);
-
+            
             // if(req.body.value > 10){
                 
             //     myClient.sendNotification(new OneSignal.Notification({      
@@ -56,12 +57,13 @@ module.exports = {
         }catch(err){
             console.log(`Error while Creating assets: ${err}`);
         }
-    }, 
+    },
+     
     //List all assents limiting 20 records for page.
     async ListAll(req,res){
         try{
             const { page } = req.query;
-            const response = await Asset.paginate({},{sort : '-createdAt'},{page , limit : 20});
+            const response = await AssetLog.paginate({},{sort : '-createdAt'},{page , limit : 20});
             //const response = await Asset.find();
             return res.json(response);
         }catch(err){
@@ -69,29 +71,36 @@ module.exports = {
         }
     },
 
+    //List all mobile assets signed as mobile
     async listMobileAssets(req,res){
         try{
-            const response = await Asset.find().sort('-createdAt');
+            const response = await AssetLog.find().sort('-createdAt');
             return res.json(response);
         }catch(err){
             console.log(`Error while fetching assets from mongoDB: ${err}`);
         }
     },
 
+    async listByMac(req,res){
+        const mac = req.params.mac;
+        const response = await AssetLog.find({mac}).sort('-createdAt');
+        //console.log(response);
+        res.json(response);
+    },
 
     async listById(req,res){
-        const response = await Asset.findById(req.params.id);
+        const response = await AssetLog.findById(req.params.id);
         return res.json(response);
     },
 
     async deleteAllAssets(req,res){
-        await Asset.remove({});
+        await AssetLog.remove({});
         req.io.emit('assetPost');
         return res.send();
     },
 
     async countErrors(req,res){
-        const response = await Asset.find().countDocuments({status : 'error', mac : 'aaa1166'})
+        const response = await AssetLog.find().countDocuments({status : 'error', mac : 'aaa1166'})
         return res.json(response);
     }
 
