@@ -15,7 +15,6 @@ const io = require('socket.io')(server);
 //MongoDB
 try{
     mongoose.set('useFindAndModify', false);
-    //mongoose.connect(`mongodb://${mongoDB}/ams`,{useNewUrlParser : true});
     mongoose.connect(process.env.MONGO_URL,{useNewUrlParser : true});
     console.log('MongoDB connection was successfuly stablished.');
 }catch(err){
